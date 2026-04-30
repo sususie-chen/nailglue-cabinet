@@ -42,5 +42,4 @@ app.get("/api/health", (c) =>
   c.json({ status: "ok", time: new Date().toISOString() })
 );
 
-// 关键：getRequestListener 把 Hono 转成 Vercel Node.js 函数能识别的 handler
 export default getRequestListener(app.fetch);
