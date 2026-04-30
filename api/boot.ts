@@ -1,11 +1,12 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { handle } from "@hono/node-server";
+import { getRequestListener } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "../server/router";
+import { appRouter } from "./router";
 
 const app = new Hono();
 
+// CORS
 app.use(
   "*",
   cors({
@@ -41,4 +42,5 @@ app.get("/api/health", (c) =>
   c.json({ status: "ok", time: new Date().toISOString() })
 );
 
-export default handle(app);
+// 关键：getRequestListener 把 Hono 转成 Vercel Node.js 函数能识别的 handler
+export default getRequestListener(app.fetch);
