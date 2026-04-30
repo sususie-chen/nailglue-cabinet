@@ -1,7 +1,5 @@
 {
-  "version": 2,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/boot.js" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/api/:path*", "destination": "/api/boot" }
   ]
 }

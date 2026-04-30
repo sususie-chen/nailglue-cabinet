@@ -26,17 +26,15 @@ app.use(
   })
 );
 
-// tRPC 路由
 app.all("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
     endpoint: "/api/trpc",
     req: c.req.raw,
     router: appRouter,
-    createContext: () => ({}),
+    createContext: () => Promise.resolve({} as any),
   });
 });
 
-// 健康检查
 app.get("/api/health", (c) =>
   c.json({ status: "ok", time: new Date().toISOString() })
 );
