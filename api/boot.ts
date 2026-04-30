@@ -6,7 +6,6 @@ import { appRouter } from "../server/router";
 
 const app = new Hono();
 
-// CORS
 app.use(
   "*",
   cors({
