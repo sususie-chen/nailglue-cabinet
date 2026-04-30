@@ -1,4 +1,5 @@
 {
+  "main": "api/boot.ts",
   "name": "my-app",
   "private": true,
   "version": "0.0.0",
