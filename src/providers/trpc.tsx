@@ -14,7 +14,7 @@ function getAuthToken(): string | null {
 }
 function getBaseUrl() {
   if (typeof window !== "undefined") {
-    return window.location.origin; // 关键改动：从 "" 改成显式 origin
+    return ""; // 浏览器里用相对路径，走当前域名
   }
   return "https://nailglue-cabinet.vercel.app";
 }
