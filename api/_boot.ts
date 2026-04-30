@@ -2,10 +2,9 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getRequestListener } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "./server/router";
+import { appRouter } from "../server/router";  // 关键：指向 api 外部的 server/
 
 const app = new Hono();
-
 
 app.use(
   "*",
