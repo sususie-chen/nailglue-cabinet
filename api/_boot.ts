@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getRequestListener } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { appRouter } from "../server/router";  // 关键：指向 api 外部的 server/
+import { appRouter } from "../server/router";
 
 const app = new Hono();
 
@@ -26,6 +26,17 @@ app.use(
   })
 );
 
+// 终极诊断路由：不经过 tRPC，纯 Hono 处理 POST
+app.post("/api/diag-post", async (c) => {
+  try {
+    const body = await c.req.json();
+    return c.json({ ok: true, type: "hono-post", body });
+  } catch (e) {
+    return c.json({ ok: false, error: String(e) }, 400);
+  }
+});
+
+// 原来的 tRPC 路由
 app.all("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
     endpoint: "/api/trpc",
