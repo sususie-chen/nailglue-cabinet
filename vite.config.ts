@@ -5,7 +5,6 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import { inspectAttr } from 'kimi-plugin-inspect-react'
 
-// 兼容所有 Node 版本的 __dirname 获取方式
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
