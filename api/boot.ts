@@ -7,10 +7,7 @@ import { createContext } from "../server/context";
 const app = new Hono();
 app.use("*", cors());
 
-// 直接匹配 /api/health，不加任何前缀
-app.get("/api/health", (c) => c.json({ status: "ok", message: "Power on!" }));
-
-// 匹配 tRPC
+// 显式拦截所有发送到 /api/trpc 的请求
 app.all("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
     endpoint: "/api/trpc",
@@ -19,5 +16,7 @@ app.all("/api/trpc/*", async (c) => {
     createContext: () => createContext(c.req.raw),
   });
 });
+
+app.get("/api/health", (c) => c.json({ status: "ok" }));
 
 export default app;
