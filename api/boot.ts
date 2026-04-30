@@ -19,4 +19,10 @@ app.all("/api/trpc/*", async (c) => {
 
 app.get("/api/health", (c) => c.json({ status: "ok" }));
 
-export default app;
+import { handle } from 'hono/vercel';
+export const GET = handle(app);
+export const POST = handle(app);
+export const OPTIONS = handle(app);
+
+// 为了兼容你之前的 esbuild 和 vercel.json，保留默认导出
+export default handle(app);
