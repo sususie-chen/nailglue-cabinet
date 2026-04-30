@@ -1,7 +1,12 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/boot.ts" },
+    { "source": "/api/:path*", "destination": "/api/boot.js" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ]
+  ],
+  "functions": {
+    "api/boot.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
