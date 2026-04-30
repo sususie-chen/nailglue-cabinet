@@ -19,10 +19,20 @@ function getAuthToken(): string | null {
   return localStorage.getItem("nail_auth_token");
 }
 
+// 动态获取 Base URL
+function getBaseUrl() {
+  if (typeof window !== "undefined") {
+    // 如果是在浏览器里跑 Vercel 域名，用相对路径
+    if (!window.location.hostname.includes("localhost")) return "";
+  }
+  // 这里的地址必须是你 Vercel 的线上真实域名
+  return "https://nailglue-cabinet.vercel.app";
+}
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      url: "/api/trpc",
+      url: `${getBaseUrl()}/api/trpc`, 
       transformer: superjson,
       headers() {
         const token = getAuthToken();
