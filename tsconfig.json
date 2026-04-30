@@ -1,28 +1,39 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.server.json"
-    }
-  ],
   "compilerOptions": {
+    /* 基础环境设置 */
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "ESNext.AsyncIterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    
+    /* 路径映射 */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@contracts/*": [
-        "./contracts/*"
-      ],
-      "@db/*": [
-        "./db/*"
-      ]
-    }
-  }
+      "@/*": ["./src/*"],
+      "@contracts/*": ["./contracts/*"],
+      "@db/*": ["./db/*"]
+    },
+
+    /* 严格性与兼容性 */
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "composite": false, /* 关闭复合模式，减少 TS6307 触发几率 */
+
+    /* 类型定义 */
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "api/**/*.ts",
+    "contracts/**/*.ts",
+    "db/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
 }
