@@ -1,8 +1,8 @@
 import { createTRPCReact } from "@trpc/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpLink } from "@trpc/client";  // 关键改动：从 httpBatchLink 换成 httpLink
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import superjson from "superjson";
-import type { AppRouter } from "../../server/router";  // 改回这个
+import type { AppRouter } from "../../server/router";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -12,9 +12,10 @@ function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("nail_auth_token");
 }
+
 function getBaseUrl() {
   if (typeof window !== "undefined") {
-    return ""; // 浏览器里用相对路径，走当前域名
+    return window.location.origin;
   }
   return "https://nailglue-cabinet.vercel.app";
 }
@@ -33,7 +34,7 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
+        httpLink({  // 关键改动：httpBatchLink → httpLink
           url: `${getBaseUrl()}/api/trpc`,
           transformer: superjson,
           headers() {
