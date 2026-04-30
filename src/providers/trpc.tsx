@@ -12,10 +12,9 @@ function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("nail_auth_token");
 }
-
 function getBaseUrl() {
   if (typeof window !== "undefined") {
-    return ""; // 浏览器里用相对路径，走当前域名
+    return window.location.origin; // 关键改动：从 "" 改成显式 origin
   }
   return "https://nailglue-cabinet.vercel.app";
 }
