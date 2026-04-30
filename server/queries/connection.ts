@@ -10,30 +10,23 @@ let instance: ReturnType<typeof drizzle<typeof fullSchema>>;
 export function getDb() {
   if (!instance) {
     const databaseUrl = process.env.DATABASE_URL;
-    
-    if (!databaseUrl) {
-      throw new Error("DATABASE_URL is not set");
-    }
+    if (!databaseUrl) throw new Error("DATABASE_URL is not set");
 
-    console.log("[getDb] DATABASE_URL exists, length:", databaseUrl.length);
-    console.log("[getDb] Creating pool...");
+    // 解析 URL，去掉 mysql2 会自动处理的 ssl 查询参数
+    const url = new URL(databaseUrl);
+    url.searchParams.delete("ssl");  // 关键：删除 URL 里的 ssl 参数，避免冲突
 
-    try {
-      const pool = createPool({
-        uri: databaseUrl,
-        connectionLimit: 5,
-        // 关键改动：TiDB Serverless 自签名证书，先关闭验证做诊断
-        ssl: { rejectUnauthorized: false },
-        // 如果上面不行，试试这个：
-        // ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: false },
-      });
+    const pool = createPool({
+      host: url.hostname,
+      port: Number(url.port) || 4000,
+      user: decodeURIComponent(url.username),
+      password: decodeURIComponent(url.password),
+      database: url.pathname.replace(/^\//, ""),
+      connectionLimit: 5,
+      ssl: { rejectUnauthorized: false },  // TiDB Serverless 自签名证书
+    });
 
-      instance = drizzle(pool, { schema: fullSchema });
-      console.log("[getDb] Pool created successfully");
-    } catch (err) {
-      console.error("[getDb] Pool creation failed:", err);
-      throw err;
-    }
+    instance = drizzle(pool, { schema: fullSchema });
   }
   return instance;
 }
