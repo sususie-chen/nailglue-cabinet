@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && rm -rf api/server && cp -r server api/server",
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "NODE_ENV=production node dist/boot.js",
