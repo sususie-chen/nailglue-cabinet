@@ -1,5 +1,10 @@
 {
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/boot" }
-  ]
+  ],
+  "functions": {
+    "api/boot.ts": {
+      "includeFiles": "server/**/*"
+    }
+  }
 }
